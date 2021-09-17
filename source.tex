@@ -1,0 +1,51 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage[inline]{asymptote}
+\usepackage{graphicx}
+\usepackage{subcaption} % https://latex-tutorial.com/tutorials/figures/
+
+\begin{document}
+	
+	this is a sample of 3D generated imagery using LaTeX
+
+\begin{figure}[h!]
+    \centering
+    \begin{asy}[width=10cm]
+    size(300);
+    
+    void testpolygon(pair[] A, int n=3, real s=0.2, pen p1=yellow, pen p2=blue)
+    {
+    pair[] a=copy(A);
+    guide g= operator --(... a)--cycle;
+    guide pic()
+    {
+    pair M=a[0];
+    for (int i=0; i<a.length; ++i)
+    {
+    if (i != (a.length-1))
+    {
+    a[i]=relpoint(a[i]--a[i+1],s);
+    } else {
+    a[i]=relpoint(a[i]--M,s);
+    }
+    }
+    return operator --(... a)--cycle;
+    }
+    for (int i=0; i <= n; ++i)
+    {
+    if (i==0) filldraw(g,p1);
+    else filldraw(pic(),(i%2==1) ? p2 : p1);
+    }
+    }
+    
+    int n=25;
+    path g=rotate(-60)*polygon(6);
+    testpolygon(new pair[]{(0,0),point(g,0),point(g,1)},n,0.1);
+    testpolygon(new pair[]{(0,0),point(g,1),point(g,2)},n,0.1);
+    testpolygon(new pair[]{(0,0),point(g,2),point(g,3)},n,0.1);
+    testpolygon(new pair[]{(0,0),point(g,3),point(g,4)},n,0.1);
+    testpolygon(new pair[]{(0,0),point(g,4),point(g,5)},n,0.1);
+    testpolygon(new pair[]{(0,0),point(g,5),point(g,0)},n,0.1);
+    \end{asy}
+\end{figure}
+\end{document}
